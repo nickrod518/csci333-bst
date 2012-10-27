@@ -36,8 +36,19 @@ void BST<T>::insert(T v) {
 
 template <typename T>
 void BST<T>::remove(T v) {
-  Node<T>* temp = new Node<T>(v);
-  root = temp;
+  Node<T>** curr = &root;
+
+  //find the node
+  while (*curr != 0 && (*curr)->getValue() != v) {
+    if (v < (*curr)->getValue()) {
+      curr = &((*curr)->getLeftChild());
+    } else if (v > (*curr)->getValue()) {
+      curr = &((*curr)->getRightChild());
+    }
+  }
+  if (*curr != 0) {
+    //remove node
+  }
 }
 
 template <typename T>
