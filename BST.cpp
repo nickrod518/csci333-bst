@@ -11,12 +11,20 @@ BST<T>::~BST() {
   
 }
 
-
 template <typename T>
 bool BST<T>::find(T v) {
-  Node<T>* temp = new Node<T>(v);
-  root = temp;  
-  return true;
+  Node<T>** curr = &root;
+
+  while (*curr != 0) {
+    if (v < (*curr)->getValue()) {
+      curr = &((*curr)->getLeftChild());
+    } else if (v > (*curr)->getValue()) {
+      curr = &((*curr)->getRightChild());
+    } else {
+      return true;
+    }
+  }
+  return false;
 }
 
 template <typename T>
@@ -36,9 +44,10 @@ void BST<T>::insert(T v) {
 
 template <typename T>
 void BST<T>::remove(T v) {
+// implement using the in-order predecessor swap
   Node<T>** curr = &root;
 
-  //find the node
+  // find the node
   while (*curr != 0 && (*curr)->getValue() != v) {
     if (v < (*curr)->getValue()) {
       curr = &((*curr)->getLeftChild());
@@ -46,8 +55,12 @@ void BST<T>::remove(T v) {
       curr = &((*curr)->getRightChild());
     }
   }
+  if ((*curr)->getValue() != v) {
+    // the node doesn't exist, so exit
+    return;
+  }
   if (*curr != 0) {
-    //remove node
+    // remove node
   }
 }
 
