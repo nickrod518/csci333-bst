@@ -67,37 +67,42 @@ void BST<T>::remove(T v) {
   } else {
 
     // node is a leaf
-    if ((*curr)->getLeftChild() == 0 &&
-        (*curr)->getRightChild() == 0) {
+    if ((*curr)->getLeftChild() == 0
+        && (*curr)->getRightChild() == 0) {
       Node<T>* temp = *curr;
       *curr = 0;
-      cout << "deleting leaf node" << endl;
       delete temp;
 
-    // node has one right child
-    } else if ((*curr)->getLeftChild() == 0) {
+    // node has one child
+    } else if ((*curr)->getLeftChild() == 0
+        || (*curr)->getRightChild() == 0) {
       Node<T>* temp = *curr;
-      *curr = (*curr)->getRightChild();
+      if ((*curr)->getLeftChild() == 0) {
+        *curr = (*curr)->getRightChild();
+      } else {
+        *curr = (*curr)->getLeftChild();
+      }
       delete temp;
-      cout << "deleting node with right child" << endl;
-
-    // node has one left child
-    } else if ((*curr)->getLeftChild() == 0) {
-      Node<T>* temp = *curr;
-      *curr = (*curr)->getLeftChild();
-      delete temp;
-      cout << "deleting node with left child" << endl;
 
     // node has left and right child
-    // do in-order predecessor swap
     } else {
+
+      // in-order successor
+      Node<T>** temp = &((*curr)->getRightChild());
+      while ((*temp)->getLeftChild() != 0) {
+        temp = &((*temp)->getLeftChild());
+      }
+      *curr = *temp;
+      delete temp;
+ 
+      /* in-order predecessor
       Node<T>** temp = &((*curr)->getLeftChild());
       while ((*temp)->getRightChild() != 0) {
         temp = &((*temp)->getRightChild());
       }
       *curr = *temp;
       delete temp;
-      cout << "deleting node with two children" << endl;
+      */
     }
   }
 }

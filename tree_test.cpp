@@ -16,8 +16,9 @@ int main() {
   bst->insert(12);
 
   bst->print();
+  cout << "-----" << endl;
 
-  bst->remove(2);
+  bst->remove(4);
   bst->remove(7);
   bst->remove(12);
 
