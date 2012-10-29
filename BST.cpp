@@ -1,6 +1,10 @@
 #include "BST.h"
 #include <iostream>
 
+using std::cout;
+using std::endl;
+using std::string;
+
 template <typename T>
 BST<T>::BST() {
   root = 0;
@@ -44,7 +48,6 @@ void BST<T>::insert(T v) {
 
 template <typename T>
 void BST<T>::remove(T v) {
-// implement using the in-order predecessor swap
   Node<T>** curr = &root;
 
   // find the node
@@ -55,12 +58,47 @@ void BST<T>::remove(T v) {
       curr = &((*curr)->getRightChild());
     }
   }
+
+  // the node doesn't exist, so exit
   if ((*curr)->getValue() != v) {
-    // the node doesn't exist, so exit
     return;
-  }
-  if (*curr != 0) {
-    // remove node
+
+  // remove node...
+  } else {
+
+    // node is a leaf
+    if ((*curr)->getLeftChild() == 0 &&
+        (*curr)->getRightChild() == 0) {
+      Node<T>* temp = *curr;
+      *curr = 0;
+      cout << "deleting leaf node" << endl;
+      delete temp;
+
+    // node has one right child
+    } else if ((*curr)->getLeftChild() == 0) {
+      Node<T>* temp = *curr;
+      *curr = (*curr)->getRightChild();
+      delete temp;
+      cout << "deleting node with right child" << endl;
+
+    // node has one left child
+    } else if ((*curr)->getLeftChild() == 0) {
+      Node<T>* temp = *curr;
+      *curr = (*curr)->getLeftChild();
+      delete temp;
+      cout << "deleting node with left child" << endl;
+
+    // node has left and right child
+    // do in-order predecessor swap
+    } else {
+      Node<T>** temp = &((*curr)->getLeftChild());
+      while ((*temp)->getRightChild() != 0) {
+        temp = &((*temp)->getRightChild());
+      }
+      *curr = *temp;
+      delete temp;
+      cout << "deleting node with two children" << endl;
+    }
   }
 }
 
@@ -80,4 +118,4 @@ void BST<T>::traversalPrint(Node<T>* root) {
 
 template class BST<int>;
 template class BST<double>;
-template class BST<std::string>;
+template class BST<string>;
