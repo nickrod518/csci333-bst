@@ -88,19 +88,23 @@ void BST<T>::remove(T v) {
     } else {
 
       // in-order successor
-      Node<T>** temp = &((*curr)->getRightChild());
-      while ((*temp)->getLeftChild() != 0) {
-        temp = &((*temp)->getLeftChild());
+      Node<T>* temp = *curr;
+      Node<T>* IOS = (*curr)->getRightChild();
+      while (IOS->getLeftChild() != 0) {
+        IOS = IOS->getLeftChild();
       }
-      *curr = *temp;
+      IOS->setLeftChild(*((temp)->getLeftChild()));
+      *curr = IOS;
       delete temp;
- 
+
       /* in-order predecessor
-      Node<T>** temp = &((*curr)->getLeftChild());
-      while ((*temp)->getRightChild() != 0) {
-        temp = &((*temp)->getRightChild());
+      Node<T>* temp = *curr;
+      Node<T>* IOP = (*curr)->getLeftChild();
+      while (IOP->getRightChild() != 0) {
+        IOP = IOP->getRightChild();
       }
-      *curr = *temp;
+      IOP->setRightChild(*((temp)->getRightChild()));
+      *curr = IOP;
       delete temp;
       */
     }
