@@ -117,17 +117,19 @@ void BST<T>::print() {
   // queue of elements to print
   list<T>* printQ = new list<T>;
   // queue of nodes to traverse
-  list< Node<T>* >* currQ = new list< Node<T>* >;
+  list< Node<T>* >* nodeQ = new list< Node<T>* >;
+
   Node<T>* curr = root;
-  currQ->push_front(root);
+  nodeQ->push_front(root);
   printQ->push_back(root->getValue());
 
-  while (!currQ->empty()) {
-    curr = currQ->front();
+  // while elements exist in tree, keep hunting
+  while (!nodeQ->empty()) {
+    curr = nodeQ->front();
 
     if (curr->getLeftChild() != 0) {
       printQ->push_back(curr->getLeftChild()->getValue());
-      currQ->push_back(curr->getLeftChild());
+      nodeQ->push_back(curr->getLeftChild());
     } else {
       // if no child exists, insert placeholder
       printQ->push_back(0);
@@ -135,19 +137,22 @@ void BST<T>::print() {
 
     if (curr->getRightChild() != 0) {
       printQ->push_back(curr->getRightChild()->getValue());
-      currQ->push_back(curr->getRightChild());
+      nodeQ->push_back(curr->getRightChild());
     } else {
       // if no child exists, insert placeholder
       printQ->push_back(0);
     }
 
-    currQ->pop_front();
+    nodeQ->pop_front();
   }
 
   while (!printQ->empty()) {
     cout << printQ->front() << endl;
     printQ->pop_front();
   }
+
+  delete printQ;
+  delete nodeQ;
 }
 
 template <typename T>
