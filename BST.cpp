@@ -1,9 +1,11 @@
 #include "BST.h"
 #include <iostream>
+#include <list>
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::list;
 
 template <typename T>
 BST<T>::BST() {
@@ -65,18 +67,17 @@ void BST<T>::remove(T v) {
 
   // remove node...
   } else {
+    Node<T>* temp = *curr;
 
     // node is a leaf
     if ((*curr)->getLeftChild() == 0
         && (*curr)->getRightChild() == 0) {
-      Node<T>* temp = *curr;
       *curr = 0;
       delete temp;
 
     // node has one child
     } else if ((*curr)->getLeftChild() == 0
         || (*curr)->getRightChild() == 0) {
-      Node<T>* temp = *curr;
       if ((*curr)->getLeftChild() == 0) {
         *curr = (*curr)->getRightChild();
       } else {
@@ -88,7 +89,6 @@ void BST<T>::remove(T v) {
     } else {
 
       // in-order successor
-      Node<T>* temp = *curr;
       Node<T>* IOS = (*curr)->getRightChild();
       while (IOS->getLeftChild() != 0) {
         IOS = IOS->getLeftChild();
@@ -98,7 +98,6 @@ void BST<T>::remove(T v) {
       delete temp;
 
       /* in-order predecessor
-      Node<T>* temp = *curr;
       Node<T>* IOP = (*curr)->getLeftChild();
       while (IOP->getRightChild() != 0) {
         IOP = IOP->getRightChild();
@@ -113,7 +112,42 @@ void BST<T>::remove(T v) {
 
 template <typename T>
 void BST<T>::print() {
-  traversalPrint(root);
+  //traversalPrint(root);
+
+  // queue of elements to print
+  list<T>* printQ = new list<T>;
+  // queue of nodes to traverse
+  list< Node<T>* >* currQ = new list< Node<T>* >;
+  Node<T>* curr = root;
+  currQ->push_front(root);
+  printQ->push_back(root->getValue());
+
+  while (!currQ->empty()) {
+    curr = currQ->front();
+
+    if (curr->getLeftChild() != 0) {
+      printQ->push_back(curr->getLeftChild()->getValue());
+      currQ->push_back(curr->getLeftChild());
+    } else {
+      // if no child exists, insert placeholder
+      printQ->push_back(0);
+    }
+
+    if (curr->getRightChild() != 0) {
+      printQ->push_back(curr->getRightChild()->getValue());
+      currQ->push_back(curr->getRightChild());
+    } else {
+      // if no child exists, insert placeholder
+      printQ->push_back(0);
+    }
+
+    currQ->pop_front();
+  }
+
+  while (!printQ->empty()) {
+    cout << printQ->front() << endl;
+    printQ->pop_front();
+  }
 }
 
 template <typename T>
