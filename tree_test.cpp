@@ -17,7 +17,7 @@ int main() {
   bst->insert(1);
 
   bst->print();
-  cout << "-----" << endl;
+/*  cout << "-----" << endl;
 
   bst->remove(2);
   bst->remove(1);
@@ -33,4 +33,5 @@ int main() {
   
   bst->print();
   cout << "-----" << endl;
+*/
 }

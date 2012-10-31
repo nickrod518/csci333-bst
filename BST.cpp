@@ -146,9 +146,20 @@ void BST<T>::print() {
     nodeQ->pop_front();
   }
 
+  int treeSize = printQ->size()*2;
+  int spaces = treeSize;
+  int numElements = 1;
   while (!printQ->empty()) {
-    cout << printQ->front() << endl;
-    printQ->pop_front();
+    for (int i = 0; i < numElements; ++i) {
+      for (int j = 0; j < spaces; ++j) {
+        cout << " ";
+      }
+      cout << printQ->front();
+      printQ->pop_front();
+    }
+    cout << endl;
+    spaces /= 2;
+    numElements *= 2;
   }
 
   delete printQ;
