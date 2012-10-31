@@ -3,11 +3,17 @@
 
 #include "Node.h"
 #include <string>
+#include <list>
+
+using std::string;
+using std::list;
 
 template <typename T>
 class BST {
  private:
   Node<T>* root;
+  list<T>* createPrintQ();
+  string toString(T v);
   void traversalPrint(Node<T>* root);
 
  public:

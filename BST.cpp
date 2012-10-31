@@ -1,11 +1,9 @@
 #include "BST.h"
 #include <iostream>
-#include <list>
+#include <sstream>
 
 using std::cout;
 using std::endl;
-using std::string;
-using std::list;
 
 template <typename T>
 BST<T>::BST() {
@@ -114,6 +112,48 @@ template <typename T>
 void BST<T>::print() {
   //traversalPrint(root);
 
+  list<T>* printQ = createPrintQ();
+  int treeSize = printQ->size()-1;
+  int spaces = treeSize;
+  int numElements = 1;
+  string currElement;
+  string symbols;
+
+  while (!printQ->empty()) {
+    for (int i = 0; i < numElements; ++i) {
+      currElement = toString(printQ->front());
+      
+      for (int j = 0; j < spaces; ++j) {
+        cout << " ";
+      }
+      
+      // print the current element unless it's a placeholder
+      if (currElement != "0") {
+        cout << currElement;
+      } else {
+        cout << " ";
+      }
+      
+      for (int j = 0; j < spaces/2; ++j) {
+        symbols += " ";
+      }
+      if (currElement != "0") {
+        symbols += "x";
+      }
+
+      printQ->pop_front();
+    }
+    cout << endl;
+    cout << symbols << endl;
+    spaces /= 2;
+    numElements *= 2;
+  }
+
+  delete printQ;
+}
+
+template <typename T>
+list<T>* BST<T>::createPrintQ() {
   // queue of elements to print
   list<T>* printQ = new list<T>;
   // queue of nodes to traverse
@@ -145,25 +185,18 @@ void BST<T>::print() {
 
     nodeQ->pop_front();
   }
-
-  int treeSize = printQ->size()*2;
-  int spaces = treeSize;
-  int numElements = 1;
-  while (!printQ->empty()) {
-    for (int i = 0; i < numElements; ++i) {
-      for (int j = 0; j < spaces; ++j) {
-        cout << " ";
-      }
-      cout << printQ->front();
-      printQ->pop_front();
-    }
-    cout << endl;
-    spaces /= 2;
-    numElements *= 2;
-  }
-
-  delete printQ;
+  
   delete nodeQ;
+  
+  // pass the created list
+  return printQ;
+}
+
+template <typename T>
+string BST<T>::toString(T v) {
+  std::stringstream ss;
+  ss << v;
+  return ss.str();
 }
 
 template <typename T>
