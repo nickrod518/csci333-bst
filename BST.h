@@ -3,16 +3,17 @@
 
 #include "Node.h"
 #include <string>
-#include <list>
+#include <vector>
 
 using std::string;
-using std::list;
+using std::vector;
 
 template <typename T>
 class BST {
  private:
   Node<T>* root;
-  list<T>* createPrintQ();
+  vector<string>* createPrintQ();
+  int getTreeDepth(Node<T>* n);
   string toString(T v);
   void traversalPrint(Node<T>* root);
 
